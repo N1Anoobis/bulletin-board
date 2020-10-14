@@ -1,4 +1,22 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.select {
+    padding: 5px;
+    border-radius: 10px;
+    outline-style: none;
+    font-weight: bold;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.link {
+    color: white;
+}
