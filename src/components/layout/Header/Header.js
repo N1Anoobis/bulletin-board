@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import { getUsers } from '../../../redux/usersRedux';
-// imp
+import { getUsers  } from '../../../redux/userReducer';
+import { setGlobalStatus } from '../../../redux/statusRedux';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
@@ -14,27 +19,45 @@ class Component extends React.Component {
 
   state = {
     status: 'denided',
+    value: ''
   }
 
   handleChange = event => {
     this.setState({
       status: event.target.value,
+      value: event.target.value
     });
+    this.props.setStatus(event.target.value)
   };
 
   render() {
     const { className, children, users } = this.props;
     const { status } = this.state;
+
+    var usersArray = [];
+for (var i = 0; i < users.length; i++) {
+    usersArray.push(users[i]);
+}
+    
     return (
-      <div className={clsx(className, styles.root)}>
-        <nav>
-          <select onChange={this.handleChange} className={styles.select}>
-            {users.map(user => {
-              return (
-                <option key={user.id} value={user.status}>{user.name}</option>
-              );
-            })}
-          </select>
+      <div className={clsx(className, styles.select)}>
+        <nav >
+
+        <FormControl variant="outlined" color="primary" >
+        <InputLabel id="demo-simple-select-outlined-label">Acces</InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={this.state.value}
+          onChange={this.handleChange}
+          label="Age"
+          className={styles.select}
+        > {usersArray.map(user => {
+          return (
+          <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
+          )})}
+        </Select>
+      </FormControl>
           {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
           {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
           {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
@@ -50,6 +73,7 @@ class Component extends React.Component {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  
 };
 
 const mapStateToProps = state => ({
@@ -57,7 +81,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // someAction: arg => dispatch(reduxActionCreator(arg)),
+  setStatus: globalStatus => dispatch(setGlobalStatus(globalStatus)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

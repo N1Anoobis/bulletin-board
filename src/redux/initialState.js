@@ -1,6 +1,6 @@
 export const initialState = {
   posts: {
-    data: {},
+    data: [],
     loading: {
       active: false,
       error: false,
@@ -23,4 +23,5 @@ export const initialState = {
       status: 'granted',
     },
   ],
+  globalStatus:{globalStatus:'denaied'}
 };
