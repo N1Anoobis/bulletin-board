@@ -16,14 +16,15 @@ import styles from './PostAdd.module.scss';
 class Component extends React.Component {
 
   state = {
-    username: '',
     email: '',
     textarea: '',
     accept: false,
     message: '',
+    published: 'published',
+    title: '',
 
     errors: {
-      username: false,
+      title: false,
       email: false,
       textarea: false,
       accept: false,
@@ -32,7 +33,7 @@ class Component extends React.Component {
 
   messages = {
     input_incorrect: 'In order to proceed, please follow the guidelines provided',
-    // accept_incorrect: 'Please agree'
+    accept_incorrect: 'Please agree'
   }
 
   handleChange = (e) => {
@@ -59,20 +60,22 @@ class Component extends React.Component {
 
     if (validation.correct) {
       this.props.addPost({
-        user: this.state.username,
+        user: 'logged user',
         email: this.state.email,
+        title: this.state.title,
         text: this.state.textarea,
-        date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' ')
+        date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
+        status: this.state.published,
       })
 
       this.setState({
-        username: '',
+        title: '',
         email: '',
         textarea: '',
         accept: false,
         message: 'Advert has been added',
         errors: {
-          username: false,
+         title: false,
           email: false,
           textarea: false,
           accept: false,
@@ -81,7 +84,7 @@ class Component extends React.Component {
     } else {
       this.setState({
         errors: {
-          username: !validation.username,
+          title: !validation.title,
           email: !validation.email,
           textarea: !validation.textarea,
           accept: !validation.accept
@@ -93,14 +96,14 @@ class Component extends React.Component {
   formValidation() {
     // true - ok
     // false - zle
-    let username = false;
+    let title = false;
     let email = false;
     let textarea = false;
     let accept = false;
     let correct = false;
 
-    if (this.state.username.length > 10 && this.state.username.indexOf(' ') === -1) {
-      username = true;
+    if (this.state.title.length > 10) {
+      title = true;
     }
 
     if (this.state.email.indexOf('@') !== -1) {
@@ -115,13 +118,13 @@ class Component extends React.Component {
       accept = true
     }
 
-    if (username && email && textarea && accept) {
+    if (title && email && textarea && accept) {
       correct = true
     }
 
     return ({
       correct,
-      username,
+      title,
       email,
       textarea,
       accept
@@ -147,11 +150,10 @@ class Component extends React.Component {
         { status.globalStatus === 'granted' && <form onSubmit={this.handleSubmit} noValidate>
 
 
-          <TextField className={styles.input} placeholder="Your name:" type="text" id="user" name="username" value={this.state.username} onChange={this.handleChange} label="Your name:" variant="outlined" />
-          {(this.state.errors.username || this.state.errors.email || this.state.errors.textarea) && <span>{this.messages.input_incorrect}</span>}
-          <TextField className={styles.input} type="text" id="user" name="username" value={this.state.email} onChange={this.handleChange} label="Your email:" variant="outlined" />
-          <TextField className={styles.input} type="text" id="user" name="username" value={this.state.email} onChange={this.handleChange} label="Title" variant="outlined" />
-          <TextField className={styles.input} type="textarea" name="textarea" id="textarea" cols="10" rows="6" value={this.state.textarea} onChange={this.handleChange}
+          {/* <TextField className={styles.input} placeholder="Your name:" type="text" id="user" name="username" value={this.state.username} onChange={this.handleChange} label="Your name:" variant="outlined" /> */}
+          <TextField className={styles.input} placeholder="Correct email including @"  type="email" id="user" name="email" value={this.state.email} onChange={this.handleChange} label="Your email:" variant="outlined" />
+          <TextField className={styles.input} placeholder="Minimum 10 digits"  type="text" id="title" name="title" value={this.state.title} onChange={this.handleChange} label="Title" variant="outlined" />
+          <TextField className={styles.input} placeholder="Minimum 20 digits"  type="textarea" name="textarea" id="textarea" cols="10" rows="6" value={this.state.textarea} onChange={this.handleChange}
             multiline
             variant="outlined"
             label="Your Advert:"
@@ -159,6 +161,7 @@ class Component extends React.Component {
           <label htmlFor="accept">
             <input type="checkbox" id="accept" name="accept" checked={this.state.accept} onChange={this.handleChange} /> I agree to use my private email.
           </label>
+          {(this.state.errors.title || this.state.errors.email || this.state.errors.textarea) && <span>{this.messages.input_incorrect}</span>}
           {this.state.errors.accept && <span>{this.messages.accept_incorrect}</span>}
           <button>Add Note</button>
         </form>}

@@ -5,12 +5,12 @@ import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import { getUsers  } from '../../../redux/userReducer';
 import { setGlobalStatus } from '../../../redux/statusRedux';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
+import InputLabel from '@material-ui/core/InputLabel';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Header.module.scss';
@@ -40,11 +40,11 @@ for (var i = 0; i < users.length; i++) {
 }
     
     return (
-      <div className={clsx(className, styles.select)}>
-        <nav >
+      <div className={clsx(className)}>
+        <nav className={styles.root}>
 
         <FormControl variant="outlined" color="primary" >
-        <InputLabel id="demo-simple-select-outlined-label">Acces</InputLabel>
+        <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {this.state.value}</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
@@ -57,6 +57,7 @@ for (var i = 0; i < users.length; i++) {
           <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
           )})}
         </Select>
+        <FormHelperText className={styles.discription} >permission level</FormHelperText>
       </FormControl>
           {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
           {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}

@@ -3,14 +3,16 @@
 .root {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .select {
-    padding: 0 15px;
+    padding: 0 5px;
     border-radius: 10px;
     font-weight: bold;
     color: white;
     margin-left: 0;
+    max-height: 30px;
 }
 
 a {
@@ -23,5 +25,9 @@ a {
     color: white;
     font-weight: bold;
     margin: 0 5px;
-    margin-top: 10px;
+}
+
+.discription {
+    font-size: 8px;
+    color: white;
 }

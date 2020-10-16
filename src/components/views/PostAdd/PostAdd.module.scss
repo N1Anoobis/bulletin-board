@@ -1,8 +1,8 @@
 @import '../../../styles/settings.scss';
 
 .root {
-  max-width: 40vw;
-  overflow: hidden;
+  max-width: 80vw;
+  min-width: 250px;
 
   form {
     display: flex;
@@ -11,8 +11,7 @@
   }
 
   .input {
-    margin: 16px;
-    max-width: 40vw;
+    margin: 18px;
     max-height: 25px;
 
     &:invalid {
@@ -23,14 +22,14 @@
   input[type="checkbox"] {
     margin-left: 20px;
     margin-right: 10px;
-    margin-top: 120px;
+    margin-top: 140px;
   }
 
   button {
     display: block;
     max-width: 200px;
     padding: 10px 20px;
-    margin: 80px auto;
+    margin: 50px auto;
     border-radius: 10px;
     outline-style: none;
     border: 1px solid black;
@@ -47,10 +46,10 @@
   }
 
   span {
-    position: absolute;
-    // display: block;
     color: red;
     font-size: 10px;
-    transform: translate(5vw, 400px);
+    max-width: 20vw;
+    margin: 0 auto;
+    text-align: center;
   }
 }
