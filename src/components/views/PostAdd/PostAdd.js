@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-
+import Card from '@material-ui/core/Card';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
@@ -145,12 +144,9 @@ class Component extends React.Component {
     console.log('global', status)
 
     return (
-      <Container className={clsx(className, styles.root)}>
+      <Card className={clsx(className, styles.root)}>
 
-        { status.globalStatus === 'granted' && <form onSubmit={this.handleSubmit} noValidate>
-
-
-          {/* <TextField className={styles.input} placeholder="Your name:" type="text" id="user" name="username" value={this.state.username} onChange={this.handleChange} label="Your name:" variant="outlined" /> */}
+        { (status.globalStatus === 'granted' || status.globalStatus === 'admin') && <form onSubmit={this.handleSubmit} noValidate>
           <TextField className={styles.input} placeholder="Correct email including @"  type="email" id="user" name="email" value={this.state.email} onChange={this.handleChange} label="Your email:" variant="outlined" />
           <TextField className={styles.input} placeholder="Minimum 10 digits"  type="text" id="title" name="title" value={this.state.title} onChange={this.handleChange} label="Title" variant="outlined" />
           <TextField className={styles.input} placeholder="Minimum 20 digits"  type="textarea" name="textarea" id="textarea" cols="10" rows="6" value={this.state.textarea} onChange={this.handleChange}
@@ -166,7 +162,7 @@ class Component extends React.Component {
           <button>Add Note</button>
         </form>}
         {this.state.message && <h3>{this.state.message}</h3>}
-      </Container>
+      </Card>
     );
   }
 }
@@ -184,10 +180,10 @@ const mapDispatchToProps = dispatch => ({
   addPost: newPost => dispatch(addNewPost(newPost)),
 });
 
-const Containe = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Containe as PostAdd,
+  Container as PostAdd,
   // Container as PostAdd,
   Component as PostAddComponent,
 };

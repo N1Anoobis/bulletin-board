@@ -1,17 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
+import { Post } from '../Post/Post';
+import { connect } from 'react-redux';
+import { getAll } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
 
-const Component = ({className, children}) => (
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import CardActionArea from '@material-ui/core/CardActionArea';
+
+const Component = ({className, children, posts}) => (
   <div className={clsx(className, styles.root)}>
-    <h2>Homepage</h2>
-    {children}
+    {posts.map((post) => (
+            <Card className={styles.card} key={post.date} variant="outlined">
+              <CardActionArea props={post} component={Link} to={`/post/${post.title}`}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {post.title}
+                  </Typography>
+                  {/* <Post {...post} /> */}
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
   </div>
 );
 
@@ -20,18 +34,18 @@ Component.propTypes = {
   className: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  posts: getAll(state),
+});
 
-// const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as Homepage,
+  Container as Homepage,
   // Container as Homepage,
   Component as HomepageComponent,
 };

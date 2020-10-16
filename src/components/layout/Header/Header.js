@@ -59,10 +59,10 @@ for (var i = 0; i < users.length; i++) {
         </Select>
         <FormHelperText className={styles.discription} >permission level</FormHelperText>
       </FormControl>
-          {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
-          {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
-          {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
-          {status === 'granted' && <Button className={styles.link} component={NavLink} exact to={`/`}>Log out</Button>}
+          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
+          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
+          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
+          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/`}>Log out</Button>}
           {status === 'denided' && <Button><a href="https://google.com" className={styles.select}>Log in</a></Button>}
         </nav>
         {children}
