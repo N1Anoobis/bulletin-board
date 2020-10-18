@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 import { globalStatus } from '../../../redux/statusRedux';
-import { addNewPost } from '../../../redux/postsRedux';
+import { addNewPost, getAll, editSinglePost } from '../../../redux/postsRedux';
 
 import styles from './PostAdd.module.scss';
 // import classes from '*.module.css';
@@ -15,11 +15,13 @@ import styles from './PostAdd.module.scss';
 class Component extends React.Component {
 
   state = {
+    id:'',
     email: '',
     textarea: '',
     accept: false,
     message: '',
     published: 'published',
+    edited: 'edited',
     title: '',
 
     errors: {
@@ -56,18 +58,31 @@ class Component extends React.Component {
     e.preventDefault()
 
     const validation = this.formValidation()
-
-    if (validation.correct) {
+    
+    if (validation.correct ) {
+      if (this.props.mode === 'add'){
       this.props.addPost({
+        //dodac tu obsluge id
         user: 'logged user',
         email: this.state.email,
         title: this.state.title,
         text: this.state.textarea,
         date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
         status: this.state.published,
+      })}
+     if (this.props.mode === 'edit'){
+      this.props.editPost({
+        id: this.state.id,
+        user: 'logged user',
+        email: this.state.email,
+        title: this.state.title,
+        text: this.state.textarea,
+        date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
+        status: this.state.edited,
       })
-
+     }
       this.setState({
+        id: '',
         title: '',
         email: '',
         textarea: '',
@@ -130,6 +145,51 @@ class Component extends React.Component {
     })
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log('route chnaged')
+    this.setState({
+      id: '',
+      email: '',
+      textarea: '',
+      // accept: false,
+      // message: this.props.post.email,
+      // published: 'edited',
+      title: '',
+    });
+ }
+
+ componentDidMount(){
+   if(this.props.mode === 'edit'){
+  const url = `${this.props.match.params.id}/edit`.slice(0, `${this.props.match.params.id}/edit`.lastIndexOf("/"))
+ 
+ for (const post of this.props.posts) {
+   if (post['title'] === url){
+    console.log(post.id)
+  this.setState({
+    id: post.id,
+     email: post.email,
+    textarea: post.text,
+    // accept: false,
+    // message: this.props.post.email,
+    // published: 'edited',
+    title: post.title,
+  });
+
+}
+}}
+// else {
+//   this.setState({
+//     email: '',
+//     textarea: '',
+  
+    
+//     title: '',
+//   });
+// }
+}
+
+
+
   componentDidUpdate() {
 
     if (this.state.message !== '') {
@@ -140,6 +200,7 @@ class Component extends React.Component {
   }
 
   render() {
+    const { mode } = this.props;
     const { className, status } = this.props;
     console.log('global', status)
 
@@ -159,7 +220,7 @@ class Component extends React.Component {
           </label>
           {(this.state.errors.title || this.state.errors.email || this.state.errors.textarea) && <span>{this.messages.input_incorrect}</span>}
           {this.state.errors.accept && <span>{this.messages.accept_incorrect}</span>}
-          <button>Add Note</button>
+          <button>{mode === 'edit'?'Edit Note':'Add Note'}</button>
         </form>}
         {this.state.message && <h3>{this.state.message}</h3>}
       </Card>
@@ -174,10 +235,12 @@ Component.propTypes = {
 
 const mapStateToProps = state => ({
   status: globalStatus(state),
+  posts: getAll(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   addPost: newPost => dispatch(addNewPost(newPost)),
+  editPost: edited => dispatch(editSinglePost(edited)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

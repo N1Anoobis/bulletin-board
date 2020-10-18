@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { Post } from '../Post/Post';
+// import { Post } from '../Post/Post';
 import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
