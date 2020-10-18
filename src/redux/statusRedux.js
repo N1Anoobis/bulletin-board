@@ -1,6 +1,6 @@
 /* selectors */
 
-export const globalStatus = ({globalStatus}) => globalStatus;
+export const globalStatus = ({ globalStatus }) => globalStatus;
 
 /* action name creator */
 const reducerName = 'globalStatus';
@@ -16,7 +16,7 @@ export const setGlobalStatus = payload => ({ payload, type: SET_STATUS });
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
-    case SET_STATUS: 
+    case SET_STATUS:
       return {
         ...statePart,
         globalStatus: action.payload,

@@ -1,33 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import clsx from 'clsx';
-import { NavLink } from 'react-router-dom';
-import { getUsers  } from '../../../redux/userReducer';
-import { setGlobalStatus } from '../../../redux/statusRedux';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { connect } from 'react-redux';
-import InputLabel from '@material-ui/core/InputLabel';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
+import clsx from 'clsx';
 import styles from './Header.module.scss';
+import { NavLink } from 'react-router-dom';
+import { getUsers } from '../../../redux/userReducer';
+import { setGlobalStatus } from '../../../redux/statusRedux';
+import { connect } from 'react-redux';
 
 class Component extends React.Component {
 
   state = {
     status: 'denided',
-    value: ''
+    value: '',
   }
 
   handleChange = event => {
     this.setState({
       status: event.target.value,
-      value: event.target.value
+      value: event.target.value,
     });
-    this.props.setStatus(event.target.value)
+    this.props.setStatus(event.target.value);
   };
 
   handleLogout = event => {
@@ -35,7 +33,7 @@ class Component extends React.Component {
       status: 'denided',
       value: 'denided'
     });
-    this.props.setStatus(event.target.value)
+    this.props.setStatus(event.target.value);
   };
 
   render() {
@@ -43,30 +41,31 @@ class Component extends React.Component {
     const { status } = this.state;
 
     var usersArray = [];
-for (var i = 0; i < users.length; i++) {
-    usersArray.push(users[i]);
-}
-    
+    for (var i = 0; i < users.length; i++) {
+      usersArray.push(users[i]);
+    }
+
     return (
       <div className={clsx(className)}>
         <nav className={styles.root}>
 
-        <FormControl variant="outlined" color="primary" >
-        <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {this.state.value}</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={this.state.value}
-          onChange={this.handleChange}
-          label="Age"
-          className={styles.select}
-        > {usersArray.map(user => {
-          return (
-          <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
-          )})}
-        </Select>
-        <FormHelperText className={styles.discription} >permission level</FormHelperText>
-      </FormControl>
+          <FormControl variant="outlined" color="primary" >
+            <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {this.state.value}</InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={this.state.value}
+              onChange={this.handleChange}
+              label="Age"
+              className={styles.select}
+            > {usersArray.map(user => {
+                return (
+                  <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
+                );
+              })}
+            </Select>
+            <FormHelperText className={styles.discription} >permission level</FormHelperText>
+          </FormControl>
           {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
           {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
           {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
@@ -82,7 +81,12 @@ for (var i = 0; i < users.length; i++) {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  
+  mode: PropTypes.string,
+  users: PropTypes.array,
+  posts: PropTypes.array,
+  status: PropTypes.string,
+  match: PropTypes.string, 
+  setStatus: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
