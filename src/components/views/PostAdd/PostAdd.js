@@ -56,7 +56,7 @@ class Component extends React.Component {
     const validation = this.formValidation();
 
     if (validation.correct) {
-      if (this.props.mode === 'add') {
+      if (!this.props.mode) {
         this.props.addPost({
           id: Math.floor(Math.random() * (1000 - 1 + 1) + 1),
           user: 'logged user',
@@ -143,6 +143,7 @@ class Component extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(this.props.mode)
     this.setState({
       id: '',
       email: '',
@@ -152,6 +153,7 @@ class Component extends React.Component {
   }
 
   componentDidMount() {
+   
     if (this.props.mode === 'edit') {
       const url = `${this.props.match.params.id}/edit`.slice(0, `${this.props.match.params.id}/edit`.lastIndexOf('/'));
 

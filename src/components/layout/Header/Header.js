@@ -46,7 +46,7 @@ class Component extends React.Component {
         usersArray.push(users[i]);
       }
     }
-    
+
     return (
       <div className={clsx(className)}>
         <nav className={styles.root}>
