@@ -10,19 +10,17 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 import { NavLink } from 'react-router-dom';
 import { getUsers } from '../../../redux/userReducer';
-import { setGlobalStatus } from '../../../redux/statusRedux';
+import { setGlobalStatus, globalStatus  } from '../../../redux/statusRedux';
 import { connect } from 'react-redux';
 
 class Component extends React.Component {
 
   state = {
-    status: 'denided',
     value: '',
   }
 
   handleChange = event => {
     this.setState({
-      status: event.target.value,
       value: event.target.value,
     });
     this.props.setStatus(event.target.value);
@@ -30,7 +28,6 @@ class Component extends React.Component {
 
   handleLogout = event => {
     this.setState({
-      status: 'denided',
       value: 'denided',
     });
     this.props.setStatus('denided');
@@ -38,8 +35,7 @@ class Component extends React.Component {
 
   render() {
     const { className, children, users } = this.props;
-    const { status } = this.state;
-
+    const { status } = this.props.status.globalStatus;
     var usersArray = [];
     if (users) {
       for (var i = 0; i < users.length; i++) {
@@ -50,7 +46,6 @@ class Component extends React.Component {
     return (
       <div className={clsx(className)}>
         <nav className={styles.root}>
-
           <FormControl variant="outlined" color="primary" >
             <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {this.state.value}</InputLabel>
             <Select
@@ -61,10 +56,10 @@ class Component extends React.Component {
               label="Age"
               className={styles.select}
             > {usersArray.map(user => {
-              return (
-                <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
-              );
-            })}
+                return (
+                  <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
+                );
+              })}
             </Select>
             <FormHelperText className={styles.discription} >permission level</FormHelperText>
           </FormControl>
@@ -86,12 +81,13 @@ Component.propTypes = {
   mode: PropTypes.string,
   users: PropTypes.array,
   posts: PropTypes.array,
-  status: PropTypes.string,
+  status: PropTypes.object,
   match: PropTypes.string,
   setStatus: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
+  status: globalStatus(state),
   users: getUsers(state),
 });
 
