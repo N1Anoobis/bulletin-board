@@ -31,9 +31,9 @@ class Component extends React.Component {
   handleLogout = event => {
     this.setState({
       status: 'denided',
-      value: 'denided'
+      value: 'denided',
     });
-    this.props.setStatus(event.target.value);
+    this.props.setStatus('denided');
   };
 
   render() {
@@ -41,10 +41,12 @@ class Component extends React.Component {
     const { status } = this.state;
 
     var usersArray = [];
-    for (var i = 0; i < users.length; i++) {
-      usersArray.push(users[i]);
+    if (users) {
+      for (var i = 0; i < users.length; i++) {
+        usersArray.push(users[i]);
+      }
     }
-
+    
     return (
       <div className={clsx(className)}>
         <nav className={styles.root}>
@@ -59,10 +61,10 @@ class Component extends React.Component {
               label="Age"
               className={styles.select}
             > {usersArray.map(user => {
-                return (
-                  <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
-                );
-              })}
+              return (
+                <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
+              );
+            })}
             </Select>
             <FormHelperText className={styles.discription} >permission level</FormHelperText>
           </FormControl>
@@ -85,7 +87,7 @@ Component.propTypes = {
   users: PropTypes.array,
   posts: PropTypes.array,
   status: PropTypes.string,
-  match: PropTypes.string, 
+  match: PropTypes.string,
   setStatus: PropTypes.func,
 };
 

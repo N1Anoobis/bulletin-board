@@ -15,10 +15,11 @@ import { globalStatus } from '../../../redux/statusRedux';
 class Component extends React.Component {
 
   render() {
-
-    let { className, posts, mode, users, status } = this.props;
+    const { className, mode, users, status } = this.props;
+    console.log(status.globalStatus)
+    let { posts } = this.props;
     if (mode === 'myAdds') {
-      let filterPosts = posts.filter(post => (post.email === users[1].email))
+      let filterPosts = posts.filter(post => (post.email === users[1].email));
       posts = filterPosts;
     }
     return (
@@ -44,7 +45,7 @@ Component.propTypes = {
   mode: PropTypes.string,
   users: PropTypes.array,
   posts: PropTypes.array,
-  status: PropTypes.string,
+  status: PropTypes.object,
 };
 
 const mapStateToProps = state => ({

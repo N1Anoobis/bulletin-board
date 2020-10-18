@@ -52,7 +52,7 @@ Component.propTypes = {
   mode: PropTypes.string,
   users: PropTypes.array,
   posts: PropTypes.array,
-  status: PropTypes.string,
+  status: PropTypes.object,
   match: PropTypes.string, 
 };
 

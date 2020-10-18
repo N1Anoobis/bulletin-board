@@ -211,8 +211,8 @@ Component.propTypes = {
   mode: PropTypes.string,
   users: PropTypes.array,
   posts: PropTypes.array,
-  status: PropTypes.string,
-  match: PropTypes.string,
+  status: PropTypes.object,
+  match: PropTypes.object,
   addPost: PropTypes.func,
   editPost: PropTypes.func,
 };
