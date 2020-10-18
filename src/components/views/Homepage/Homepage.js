@@ -16,7 +16,6 @@ class Component extends React.Component {
 
   render() {
     const { className, mode, users, status } = this.props;
-    console.log(status.globalStatus)
     let { posts } = this.props;
     if (mode === 'myAdds') {
       let filterPosts = posts.filter(post => (post.email === users[1].email));

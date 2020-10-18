@@ -53,7 +53,7 @@ Component.propTypes = {
   users: PropTypes.array,
   posts: PropTypes.array,
   status: PropTypes.object,
-  match: PropTypes.string, 
+  match: PropTypes.object, 
 };
 
 const mapStateToProps = state => ({
