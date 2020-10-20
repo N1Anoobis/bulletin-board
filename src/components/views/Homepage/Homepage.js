@@ -7,24 +7,29 @@ import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux';
+import { getAll, fetchPublished } from '../../../redux/postsRedux';
 import { getUsers } from '../../../redux/userReducer';
 import styles from './Homepage.module.scss';
 import { globalStatus } from '../../../redux/statusRedux';
 
 class Component extends React.Component {
 
+  componentDidMount() {
+    const { fetchPublishedPosts } = this.props;
+    fetchPublishedPosts();
+  }
+
   render() {
     const { className, mode, users, status } = this.props;
     let { posts } = this.props;
     if (mode === 'myAdds') {
-      let filterPosts = posts.filter(post => (post.email === users[1].email));
+      let filterPosts = posts.filter(post => (post.author === users[1].email));
       posts = filterPosts;
     }
     return (
       (status.globalStatus === 'granted' || (!mode)) && <div className={clsx(className, styles.root)}>
         {posts.map((post) => (
-          <Card className={styles.card} key={post.date} variant="outlined">
+          <Card className={styles.card} key={post.title} variant="outlined">
             <CardActionArea props={post} component={Link} to={`/post/${post.title}`}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
@@ -38,6 +43,7 @@ class Component extends React.Component {
     );
   }
 }
+
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
@@ -45,6 +51,7 @@ Component.propTypes = {
   users: PropTypes.array,
   posts: PropTypes.array,
   status: PropTypes.object,
+  fetchPublishedPosts: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -54,6 +61,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

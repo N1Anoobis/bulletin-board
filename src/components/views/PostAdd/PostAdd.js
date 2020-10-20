@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { globalStatus } from '../../../redux/statusRedux';
 import { addNewPost, getAll, editSinglePost } from '../../../redux/postsRedux';
 import styles from './PostAdd.module.scss';
+import Button from '@material-ui/core/Button';
 
 class Component extends React.Component {
 
@@ -19,7 +20,7 @@ class Component extends React.Component {
     published: 'published',
     edited: 'edited',
     title: '',
-
+    // image: '',
     errors: {
       title: false,
       email: false,
@@ -32,6 +33,14 @@ class Component extends React.Component {
     input_incorrect: 'In order to proceed, please follow the guidelines provided',
     accept_incorrect: 'Please agree',
   }
+
+  setImage = ({ target }) => {
+    // console.log(target)
+    const { post } = this.state;
+    const file = target.files;
+    if (file) this.setState({ post: { ...post, image: file[0] } });
+  };
+
 
   handleChange = (e) => {
     const name = e.target.name;
@@ -63,8 +72,9 @@ class Component extends React.Component {
           email: this.state.email,
           title: this.state.title,
           text: this.state.textarea,
-          date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
+          created: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
           status: this.state.published,
+          // image: this.state.image,
         });
       }
       if (this.props.mode === 'edit') {
@@ -74,8 +84,9 @@ class Component extends React.Component {
           email: this.state.email,
           title: this.state.title,
           text: this.state.textarea,
-          date: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
+          updated: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
           status: this.state.edited,
+          // image: this.state.image,
         });
       }
       this.setState({
@@ -85,6 +96,7 @@ class Component extends React.Component {
         textarea: '',
         accept: false,
         message: 'Advert has been added',
+        // image: '',
         errors: {
           title: false,
           email: false,
@@ -142,18 +154,18 @@ class Component extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(this.props.mode)
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       id: '',
       email: '',
       textarea: '',
       title: '',
+      // image: '',
     });
   }
 
   componentDidMount() {
-   
+
     if (this.props.mode === 'edit') {
       const url = `${this.props.match.params.id}/edit`.slice(0, `${this.props.match.params.id}/edit`.lastIndexOf('/'));
 
@@ -161,9 +173,10 @@ class Component extends React.Component {
         if (post['title'] === url) {
           this.setState({
             id: post.id,
-            email: post.email,
+            email: post.author,
             textarea: post.text,
             title: post.title,
+            // image: post.image,
           });
         }
       }
@@ -179,13 +192,35 @@ class Component extends React.Component {
     }
   }
 
+  // setImage = ({ target }) => {
+  //   console.log(target.files)
+  //   const { post } = this.state;
+  //   const file = target.files;
+  //   if (file) this.setState({ post: { ...post, image: file[0] } });
+  // };
+
+
   render() {
     const { mode } = this.props;
     const { className, status } = this.props;
 
     return (
       <Card className={clsx(className, styles.root)}>
-
+        <input
+         
+          accept="image/*"
+          className={styles.input}
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          multiple
+          onChange={this.setImage}
+          type="file"
+        />
+        <label htmlFor="raised-button-file">
+          <Button style={{ display: 'none' }} variant="outlined" component="span" className={styles.button}>
+            Upload
+          </Button>
+        </label>
         { (status.globalStatus === 'granted' || status.globalStatus === 'admin') && <form onSubmit={this.handleSubmit} noValidate>
           <TextField className={styles.input} placeholder="Correct email including @" type="email" id="user" name="email" value={this.state.email} onChange={this.handleChange} label="Your email:" variant="outlined" />
           <TextField className={styles.input} placeholder="Minimum 10 digits" type="text" id="title" name="title" value={this.state.title} onChange={this.handleChange} label="Title" variant="outlined" />

@@ -20,11 +20,12 @@ class Component extends React.Component {
     const currentlyLoggedUser = this.props.users[1];
     for (const post of this.props.posts) {
       if (post['title'] === this.props.match.params.id) {
+        console.log(post);
         return (
           <div className={clsx(className, styles.root)} >
             <Card key={post._id}>
               <CardContent>
-                {((this.status === 'granted' && currentlyLoggedUser.email === post.email) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${post.title}/edit`} >edit</Button>}
+                {((this.status === 'granted' && currentlyLoggedUser.email === post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${post.title}/edit`} >edit</Button>}
                 <Typography gutterBottom variant="h5" component="h2">
                   <div className={styles.title}>{post.title}</div>
                   <div>{post.text}</div>
@@ -33,9 +34,8 @@ class Component extends React.Component {
                       Status: <span className={styles.status}>{post.status}</span>
                     </p>
                   </div>
-                  <p>Contact seller:</p>
-                  <p>{`email: ${post.email}`}</p>
-                  <p>Latest update: {post.date}</p>
+                  <p>{`email: ${post.author}`}</p>
+                  <p>Latest update: {post.updated ? post.updated : post.created}</p>
                 </Typography>
               </CardContent>
             </Card>
@@ -53,7 +53,7 @@ Component.propTypes = {
   users: PropTypes.array,
   posts: PropTypes.array,
   status: PropTypes.object,
-  match: PropTypes.object, 
+  match: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
