@@ -2,6 +2,8 @@ import Axios from 'axios';
 /* selectors */
 export const getAll = ({ posts }) => posts.data;
 
+export const getPostById = ({ posts }) => posts.post;
+
 /* action name creator */
 const reducerName = 'posts';
 const createActionName = name => `app/${reducerName}/${name}`;
@@ -11,6 +13,7 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 
+const FETCH_POST = createActionName('FETCH_POST');
 const ADD_POST = createActionName('ADD_POST');
 const EDIT_POST = createActionName('EDIT_POST');
 /* action creators */
@@ -18,6 +21,7 @@ export const fetchStarted = payload => ({ payload, type: FETCH_START });
 export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 
+export const fetchSinglePost = payload => ({ payload, type: FETCH_POST });
 export const addNewPost = payload => ({ payload, type: ADD_POST });
 export const editSinglePost = (payload) => ({ payload, type: EDIT_POST });
 /* thunk creators */
@@ -39,6 +43,19 @@ export const fetchPublished = () => {
     }
   };
 };
+
+export const fetchSingledPosts =  (id) => {
+  return async (dispatch, getState)  => {
+    dispatch(fetchStarted());
+    try {
+      let res = await Axios.get(`http://localhost:8000/api/post/${id}`);
+      dispatch(fetchSinglePost(res.data));
+    } catch(e) {
+      dispatch(fetchError(e.message || true));
+    }
+  };
+};
+
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
@@ -59,6 +76,16 @@ export const reducer = (statePart = [], action = {}) => {
           error: false,
         },
         data: action.payload,
+      };
+    }
+    case FETCH_POST: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        post: action.payload,
       };
     }
     case FETCH_ERROR: {

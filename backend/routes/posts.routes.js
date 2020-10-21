@@ -7,7 +7,7 @@ router.get('/posts', async (req, res) => {
   try {
     const result = await Post
       .find({status: 'published'})
-      .select('author created title photo text status')
+      .select('title author created updated status text')
       .sort({created: -1});
     if(!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);
@@ -17,7 +17,7 @@ router.get('/posts', async (req, res) => {
   }
 });
 
-router.get('/posts/:id', async (req, res) => {
+router.get('/post/:id', async (req, res) => {
   try {
     const result = await Post
       .findById(req.params.id);

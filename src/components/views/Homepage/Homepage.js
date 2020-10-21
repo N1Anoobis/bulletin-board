@@ -29,8 +29,8 @@ class Component extends React.Component {
     return (
       (status.globalStatus === 'granted' || (!mode)) && <div className={clsx(className, styles.root)}>
         {posts.map((post) => (
-          <Card className={styles.card} key={post.title} variant="outlined">
-            <CardActionArea props={post} component={Link} to={`/post/${post.title}`}>
+          <Card className={styles.card} key={post._id} variant="outlined">
+            <CardActionArea props={post} component={Link} to={`/post/${post._id}`}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {post.title}

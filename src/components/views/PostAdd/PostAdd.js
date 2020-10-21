@@ -69,7 +69,7 @@ class Component extends React.Component {
         this.props.addPost({
           id: Math.floor(Math.random() * (1000 - 1 + 1) + 1),
           user: 'logged user',
-          email: this.state.email,
+          author: this.state.email,
           title: this.state.title,
           text: this.state.textarea,
           created: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),

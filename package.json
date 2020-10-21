@@ -13,7 +13,7 @@
     "test-related": "react-scripts test --watchAll=false --noStackTrace --findRelatedTests",
     "eject": "react-scripts eject",
     "server": "npx nodemon backend/server.js",
-    "start-all": "yarn start server"
+    "dev": "yarn start && npx nodemon backend/server.js"
   },
   "lint-staged": {
     "src/**/*.js": [
