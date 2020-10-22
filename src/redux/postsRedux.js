@@ -57,7 +57,6 @@ export const addNewAdvert = (newPost) => {
     dispatch(fetchStarted());
     try {
       let res = await Axios.post(`http://localhost:8000/api/posts/add`, newPost);
-      // console.log(res)
       dispatch(addNewPost(res.data));
     } catch (e) {
       dispatch(fetchError(e.message));

@@ -29,55 +29,29 @@ router.get('/post/:id', async (req, res) => {
   }
 });
 
-
 router.post('/posts/add', async (req, res) => {
   try {
-    console.log(req);
-    const newPost = new Post({ ...req.body });
-    await newPost.save();
-    res.json(newPost);
+    const { title, text, author } = req.body;
+
+    const validateData = (title, text, author) => {
+      const validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+      let isValid = true;
+      if (!title && !text && !author) isValid = false;
+      else if (title.length < 10 && title.length > 20) isValid = false;
+      else if (text.length < 20) isValid = false;
+      else if (!validEmail.test(author)) isValid = false;
+      return isValid;
+    };
+    if (validateData(title, text, author)) {
+      const newPost = new Post({ ...req.body });
+      await newPost.save();
+      res.json(newPost);
+    }
   } catch (err) {
     res.status(500).json({ messaage: err });
   }
 });
-
-// router.post('/posts/add', async (req, res) => {
-//   try {
-//     const { title, description, email } = req.fields;
-
-//     console.log('req',req);
-//     const validateData = (title, description, email) => {
-    
-
-//       const validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-   
-
-//       let isValid = true;
-//       if (!title && !description && !email) isValid = false;
-//       else if (title.length < 10 && title.length > 50) isValid = false;
-//       else if (description.length < 20) isValid = false;
-//       else if (!validEmail.test(email)) isValid = false;
-
-      
-
-//       console.log('after validation', isValid);
-//       return isValid;
-//     };
-
-
- 
-
-//     if (req) {
-//       const newPost = new Post({ ...req.fields });
-//       await newPost.save();
-//       res.json(newPost);
-//     } else {
-//       throw new Error('Wrong input!');
-//     }
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
 
 module.exports = router;
 
