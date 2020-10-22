@@ -25,5 +25,5 @@ export const initialState = {
       status: 'admin',
     },
   ],
-  globalStatus: { globalStatus: 'denaied' },
+  globalStatus: { globalStatus: 'denided' },
 };

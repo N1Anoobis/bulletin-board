@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,70 +10,62 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 import { NavLink } from 'react-router-dom';
 import { getUsers } from '../../../redux/userReducer';
-import { setGlobalStatus, globalStatus  } from '../../../redux/statusRedux';
+import { setGlobalStatus, globalStatus } from '../../../redux/statusRedux';
 import { connect } from 'react-redux';
+import LoginButton from '../../features/LoginButton';
+import LogoutButton from '../../features/LogoutButton';
+import { useAuth0 } from '@auth0/auth0-react';
 
-class Component extends React.Component {
+const Component = ({ className, users, setStatus }) => {
+  const { isAuthenticated } = useAuth0();
+  const [value, setValue] = useState('denided');
 
-  state = {
-    value: '',
-  }
-
-  handleChange = event => {
-    this.setState({
-      value: event.target.value,
-    });
-    this.props.setStatus(event.target.value);
+  const handleChange = event => {
+    setValue(event.target.value);
+    setStatus(event.target.value);
   };
 
-  handleLogout = event => {
-    this.setState({
-      value: 'denided',
-    });
-    this.props.setStatus('denided');
-  };
+  React.useEffect(() => {
+    (isAuthenticated) ? setStatus('granted') && setValue('granted') : setStatus('denided') && setValue('denided');
+  }, [isAuthenticated]);
 
-  render() {
-    const { className, children, users } = this.props;
-    const { status } = this.props.status.globalStatus;
-    var usersArray = [];
-    if (users) {
-      for (var i = 0; i < users.length; i++) {
-        usersArray.push(users[i]);
-      }
+  let usersArray = [];
+  if (users) {
+    for (var i = 0; i < users.length; i++) {
+      usersArray.push(users[i]);
     }
-
-    return (
-      <div className={clsx(className)}>
-        <nav className={styles.root}>
-          <FormControl variant="outlined" color="primary" >
-            <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {this.state.value}</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={this.state.value}
-              onChange={this.handleChange}
-              label="Age"
-              className={styles.select}
-            > {usersArray.map(user => {
-                return (
-                  <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
-                );
-              })}
-            </Select>
-            <FormHelperText className={styles.discription} >permission level</FormHelperText>
-          </FormControl>
-          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
-          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
-          {status !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
-          {status !== 'denided' && <Button className={styles.link} onClick={this.handleLogout} component={NavLink} exact to={`/`}>Log out</Button>}
-          {status === 'denided' && <Button><a href="https://google.com" className={styles.select}>Log in</a></Button>}
-        </nav>
-        {children}
-      </div>
-    );
   }
-}
+  console.log(isAuthenticated)
+  return (
+    <div className={clsx(className)}>
+      <nav className={styles.root}>
+        <FormControl variant="outlined" color="primary" >
+          <InputLabel className={styles.discription} id="demo-simple-select-autowidth-label">acces {value}</InputLabel>
+          {isAuthenticated && <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={value}
+            onChange={handleChange}
+            label="Age"
+            className={styles.select}
+          > {usersArray.map(user => {
+              return (
+                <MenuItem key={user.id} value={user.status}>{user.name}</MenuItem>
+              );
+            })}
+          </Select>}
+          <FormHelperText className={styles.discription} >permission level</FormHelperText>
+        </FormControl>
+        {value !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/`} activeClassName='active'>HomePage</Button>}
+        {value !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/myposts`} activeClassName='active'>My Posts</Button>}
+        {value !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
+        {(isAuthenticated && value !== 'denided') && <LogoutButton />}
+        {(!isAuthenticated) && <LoginButton className={styles.login} /> }
+
+      </nav>
+    </div>
+  );
+};
 
 Component.propTypes = {
   children: PropTypes.node,

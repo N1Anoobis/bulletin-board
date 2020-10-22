@@ -200,7 +200,6 @@ class Component extends React.Component {
   //   if (file) this.setState({ post: { ...post, image: file[0] } });
   // };
 
-
   render() {
     const { mode } = this.props;
     const { className, status } = this.props;
