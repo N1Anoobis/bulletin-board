@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { globalStatus } from '../../../redux/statusRedux';
-import { addNewPost, getAll, editSinglePost } from '../../../redux/postsRedux';
+import {  getAll, editSinglePost, addNewAdvert } from '../../../redux/postsRedux';
 import styles from './PostAdd.module.scss';
 import Button from '@material-ui/core/Button';
 
@@ -67,13 +67,14 @@ class Component extends React.Component {
     if (validation.correct) {
       if (!this.props.mode) {
         this.props.addPost({
-          id: Math.floor(Math.random() * (1000 - 1 + 1) + 1),
-          user: 'logged user',
+          // id: Math.floor(Math.random() * (1000 - 1 + 1) + 1),
+          // user: 'logged user',
           author: this.state.email,
           title: this.state.title,
           text: this.state.textarea,
           created: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
           status: this.state.published,
+          updated: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
           // image: this.state.image,
         });
       }
@@ -95,7 +96,7 @@ class Component extends React.Component {
         email: '',
         textarea: '',
         accept: false,
-        message: 'Advert has been added',
+        message: 'Advert has been posted',
         // image: '',
         errors: {
           title: false,
@@ -188,7 +189,7 @@ class Component extends React.Component {
     if (this.state.message !== '') {
       setTimeout(() => this.setState({
         message: '',
-      }), 3000);
+      }), 1000);
     }
   }
 
@@ -252,6 +253,7 @@ Component.propTypes = {
   match: PropTypes.object,
   addPost: PropTypes.func,
   editPost: PropTypes.func,
+  addNewAdvert: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -260,8 +262,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPost: newPost => dispatch(addNewPost(newPost)),
+  // addPost: newPost => dispatch(addNewPost(newPost)),
   editPost: edited => dispatch(editSinglePost(edited)),
+  addPost: newPost => dispatch(addNewAdvert(newPost)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

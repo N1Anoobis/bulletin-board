@@ -27,31 +27,40 @@ export const editSinglePost = (payload) => ({ payload, type: EDIT_POST });
 /* thunk creators */
 export const fetchPublished = () => {
   return (dispatch, getState) => {
-    const state = getState();
-
-    if (state.posts.data.length === 0 && state.posts.loading.active === false) {
-      dispatch(fetchStarted());
-
-      Axios
-        .get('http://localhost:8000/api/posts')
-        .then(res => {
-          dispatch(fetchSuccess(res.data));
-        })
-        .catch(err => {
-          dispatch(fetchError(err.message || true));
-        });
-    }
+   
+    dispatch(fetchStarted());
+    Axios
+      .get('http://localhost:8000/api/posts')
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
   };
 };
 
-export const fetchSingledPosts =  (id) => {
-  return async (dispatch, getState)  => {
+export const fetchSingledPosts = (id) => {
+  return async (dispatch) => {
     dispatch(fetchStarted());
     try {
       let res = await Axios.get(`http://localhost:8000/api/post/${id}`);
       dispatch(fetchSinglePost(res.data));
-    } catch(e) {
+    } catch (e) {
       dispatch(fetchError(e.message || true));
+    }
+  };
+};
+
+export const addNewAdvert = (newPost) => {
+  return async (dispatch) => {
+    dispatch(fetchStarted());
+    try {
+      let res = await Axios.post(`http://localhost:8000/api/posts/add`, newPost);
+      // console.log(res)
+      dispatch(addNewPost(res.data));
+    } catch (e) {
+      dispatch(fetchError(e.message));
     }
   };
 };
