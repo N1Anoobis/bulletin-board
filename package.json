@@ -13,8 +13,10 @@
     "test-related": "react-scripts test --watchAll=false --noStackTrace --findRelatedTests",
     "eject": "react-scripts eject",
     "server": "npx nodemon backend/server.js",
-    "dev": "yarn start && npx nodemon backend/server.js"
+    "client": "yarn start",
+    "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
+  "proxy": "http://localhost:8000",
   "lint-staged": {
     "src/**/*.js": [
       "yarn test-related --",
@@ -38,6 +40,7 @@
     "@material-ui/icons": "^4.5.1",
     "axios": "^0.20.0",
     "clsx": "^1.0.4",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
