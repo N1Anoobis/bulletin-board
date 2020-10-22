@@ -17,7 +17,7 @@ import LogoutButton from '../../features/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const Component = ({ className, users, setStatus }) => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
   const [value, setValue] = useState('denided');
 
   const handleChange = event => {
@@ -35,7 +35,7 @@ const Component = ({ className, users, setStatus }) => {
       usersArray.push(users[i]);
     }
   }
-  console.log(isAuthenticated)
+
   return (
     <div className={clsx(className)}>
       <nav className={styles.root}>
@@ -61,7 +61,7 @@ const Component = ({ className, users, setStatus }) => {
         {value !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
         {(isAuthenticated && value !== 'denided') && <LogoutButton />}
         {(!isAuthenticated) && <LoginButton className={styles.login} /> }
-
+        {isAuthenticated && <div className={styles.welcome}>Welcome {user.name}</div>}
       </nav>
     </div>
   );

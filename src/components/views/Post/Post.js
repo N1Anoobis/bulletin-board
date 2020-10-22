@@ -44,6 +44,9 @@ class Component extends React.Component {
             </Typography>
           </CardContent>
         </Card> : null}
+        <Button variant="outlined" color="primary" size="medium" component={Link} to={`/`}>
+      Homepage
+        </Button>
       </div>
     );
   }
