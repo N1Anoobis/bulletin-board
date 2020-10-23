@@ -11,6 +11,7 @@ import { globalStatus } from '../../../redux/statusRedux';
 import Button from '@material-ui/core/Button';
 import styles from './Post.module.scss';
 import { Link } from 'react-router-dom';
+// import CardMedia from '@material-ui/core/CardMedia';
 
 class Component extends React.Component {
 
@@ -26,12 +27,14 @@ class Component extends React.Component {
     const { getPost } = this.props;
     this.post = getPost;
   
+    
     return (
       <div className={clsx(className, styles.root)} >
         {(this.post) ? <Card >
           <CardContent>
             {((this.status === 'granted' && currentlyLoggedUser.email === this.post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${this.post.title}/edit`} >edit</Button>}
             <Typography gutterBottom variant="h5" component="h2">
+              {/* { this.post.photo && <CardMedia component="img" alt="Ad item" image={'http://localhost:8000/api/pos/'} />} */}
               <div className={styles.title}>{this.post.title}</div>
               <div>{this.post.text}</div>
               <div className={styles.dataAndStatus}>
@@ -62,6 +65,7 @@ Component.propTypes = {
   match: PropTypes.object,
   getPost: PropTypes.object,
   getSingledPosts: PropTypes.func,
+  photo: PropTypes.string,
 };
 
 const mapStateToProps = (state, props) => ({

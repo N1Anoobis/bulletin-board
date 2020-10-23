@@ -32,10 +32,10 @@ router.get('/post/:id', async (req, res) => {
 router.post('/posts/add', async (req, res) => {
   try {
     const { title, text, author } = req.body;
-
-
+    const fileName = req.body.photo.split('/').slice(-1)[0];
+    
     if (validateUserInput(title, text, author)) {
-      const newPost = new Post({ ...req.body });
+      const newPost = new Post({ ...req.body, photo: fileName});
       await newPost.save();
       res.json(newPost);
     }

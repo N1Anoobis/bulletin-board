@@ -23,14 +23,13 @@
   input[type="checkbox"] {
     margin-left: 20px;
     margin-right: 10px;
-    margin-top: 140px;
   }
 
   button {
     display: block;
     max-width: 200px;
     padding: 10px 20px;
-    margin: 50px auto;
+    margin: 20px auto;
     border-radius: 10px;
     outline-style: none;
     border: 1px solid black;
@@ -52,9 +51,7 @@
     margin: 0 auto;
     text-align: center;
   }
-
-  // .inputPhoto {
-  //   display: 'none',
-  // }
+  .upload {
+    margin: 160px auto 30px auto;
+  }
 }
-
