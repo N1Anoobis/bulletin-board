@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { globalStatus } from '../../../redux/statusRedux';
-import {  getAll, editSinglePost, addNewAdvert } from '../../../redux/postsRedux';
+import {  getAll, editSingledAdvert, addNewAdvert } from '../../../redux/postsRedux';
 import styles from './PostAdd.module.scss';
 import Button from '@material-ui/core/Button';
 
@@ -40,7 +40,6 @@ class Component extends React.Component {
     const file = target.files;
     if (file) this.setState({ post: { ...post, image: file[0] } });
   };
-
 
   handleChange = (e) => {
     const name = e.target.name;
@@ -82,7 +81,7 @@ class Component extends React.Component {
         this.props.editPost({
           id: this.state.id,
           user: 'logged user',
-          email: this.state.email,
+          author: this.state.email,
           title: this.state.title,
           text: this.state.textarea,
           updated: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
@@ -173,7 +172,7 @@ class Component extends React.Component {
       for (const post of this.props.posts) {
         if (post['title'] === url) {
           this.setState({
-            id: post.id,
+            id: post._id,
             email: post.author,
             textarea: post.text,
             title: post.title,
@@ -203,7 +202,7 @@ class Component extends React.Component {
   render() {
     const { mode } = this.props;
     const { className, status } = this.props;
-
+   
     return (
       <Card className={clsx(className, styles.root)}>
         <input
@@ -262,7 +261,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   // addPost: newPost => dispatch(addNewPost(newPost)),
-  editPost: edited => dispatch(editSinglePost(edited)),
+  editPost: edited => dispatch(editSingledAdvert(edited)),
   addPost: newPost => dispatch(addNewAdvert(newPost)),
 });
 

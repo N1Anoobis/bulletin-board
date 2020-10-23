@@ -64,6 +64,18 @@ export const addNewAdvert = (newPost) => {
   };
 };
 
+export const editSingledAdvert = (edited) => {
+  return async (dispatch) => {
+    dispatch(fetchStarted());
+    try {
+      let res = await Axios.put(`http://localhost:8000/api/post/${edited.id}/edit`, edited);
+      dispatch(editSinglePost(res));
+    } catch (e) {
+      dispatch(fetchError(e.message));
+    }
+  };
+};
+
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
@@ -119,7 +131,6 @@ export const reducer = (statePart = [], action = {}) => {
       };
     }
     case EDIT_POST: {
-      console.log(action.payload);
       return {
         ...statePart,
         data: statePart.data.map(post => {

@@ -26,9 +26,10 @@ class Component extends React.Component {
       let filterPosts = posts.filter(post => (post.author === users[1].email));
       posts = filterPosts;
     }
+
     return (
       (status.globalStatus === 'granted' || (!mode)) && <div className={clsx(className, styles.root)}>
-        {posts.map((post) => (
+        {(posts) && posts.map((post) => (
           <Card className={styles.card} key={post._id} variant="outlined">
             <CardActionArea props={post} component={Link} to={`/post/${post._id}`}>
               <CardContent>

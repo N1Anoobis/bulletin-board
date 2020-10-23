@@ -61,7 +61,7 @@ const Component = ({ className, users, setStatus }) => {
         {value !== 'denided' && <Button className={styles.link} component={NavLink} exact to={`/post/add`} activeClassName='active'>Add Post</Button>}
         {(isAuthenticated && value !== 'denided') && <LogoutButton />}
         {(!isAuthenticated) && <LoginButton className={styles.login} /> }
-        {isAuthenticated && <div className={styles.welcome}>Welcome {user.name}</div>}
+        {isAuthenticated && <div className={styles.welcome}>user: {user.name}</div>}
       </nav>
     </div>
   );
