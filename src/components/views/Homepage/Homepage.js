@@ -11,6 +11,7 @@ import { getAll, fetchPublished } from '../../../redux/postsRedux';
 import { getUsers } from '../../../redux/userReducer';
 import styles from './Homepage.module.scss';
 import { globalStatus } from '../../../redux/statusRedux';
+import Avatar from '@material-ui/core/Avatar';
 
 class Component extends React.Component {
 
@@ -26,14 +27,16 @@ class Component extends React.Component {
       let filterPosts = posts.filter(post => (post.author === users[1].email));
       posts = filterPosts;
     }
+    this.imageUrl = '//' + window.location.hostname + (window.location.hostname === 'localhost' ? ':8000/uploads/' : '/');
 
     return (
       (status.globalStatus === 'granted' || (!mode)) && <div className={clsx(className, styles.root)}>
         {(posts) && posts.map((post) => (
-          <Card className={styles.card} key={post._id} variant="outlined">
-            <CardActionArea props={post} component={Link} to={`/post/${post._id}`}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
+          <Card className={styles.wrapper} key={post.title} variant="outlined">
+            <CardActionArea className={styles.card} props={post} component={Link} to={`/post/${post._id}`}>
+              {post.photo && <Avatar className={styles.avatar} src={`${this.imageUrl}${post.photo}`} />}
+              <CardContent className={styles.typho}>
+                <Typography gutterBottom variant="h6" component="h2">
                   {post.title}
                 </Typography>
               </CardContent>

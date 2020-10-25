@@ -25,12 +25,13 @@ class Component extends React.Component {
       title: false,
       email: false,
       textarea: false,
+      photo: false,
       accept: false,
     },
   }
 
   messages = {
-    input_incorrect: 'In order to proceed, please follow the guidelines provided',
+    input_incorrect: 'In order to proceed, please add photo and follow the guidelines provided',
     accept_incorrect: 'Please agree',
   }
 
@@ -99,6 +100,7 @@ class Component extends React.Component {
           title: false,
           email: false,
           textarea: false,
+          photo: false,
           accept: false,
         },
       });
@@ -108,6 +110,7 @@ class Component extends React.Component {
           title: !validation.title,
           email: !validation.email,
           textarea: !validation.textarea,
+          photo: !validation.photo,
           accept: !validation.accept,
         },
       });
@@ -118,6 +121,7 @@ class Component extends React.Component {
     let title = false;
     let email = false;
     let textarea = false;
+    let photo = false;
     let accept = false;
     let correct = false;
 
@@ -137,7 +141,11 @@ class Component extends React.Component {
       accept = true;
     }
 
-    if (title && email && textarea && accept) {
+    if (this.state.photo) {
+      photo = true;
+    }
+
+    if (title && email && textarea && photo && accept) {
       correct = true;
     }
 
@@ -147,6 +155,7 @@ class Component extends React.Component {
       email,
       textarea,
       accept,
+      photo,
     });
   }
 
@@ -174,7 +183,6 @@ class Component extends React.Component {
             title: post.title,
             photo: post.photo,
           });
-          console.log(post)
         }
       }
     }
@@ -217,7 +225,7 @@ class Component extends React.Component {
           <label htmlFor="accept">
             <input type="checkbox" id="accept" name="accept" checked={this.state.accept} onChange={this.handleChange} /> I agree to use my private email.
           </label>
-          {(this.state.errors.title || this.state.errors.email || this.state.errors.textarea) && <span>{this.messages.input_incorrect}</span>}
+          {(this.state.errors.title || this.state.errors.email || this.state.errors.textarea || this.state.errors.photo) && <span>{this.messages.input_incorrect}</span>}
           {this.state.errors.accept && <span>{this.messages.accept_incorrect}</span>}
           <button>{mode === 'edit' ? 'Edit Note' : 'Add Note'}</button>
         </form>}

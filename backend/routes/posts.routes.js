@@ -7,7 +7,7 @@ router.get('/posts', async (req, res) => {
   try {
     const result = await Post
       .find()
-      .select('title author created updated status text')
+      .select('title author created updated status text photo')
       .sort({ created: -1 });
     if (!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);

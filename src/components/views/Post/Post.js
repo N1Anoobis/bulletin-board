@@ -28,14 +28,17 @@ class Component extends React.Component {
     const { getPost } = this.props;
     this.post = getPost;
     this.imageUrl = '//' + window.location.hostname + (window.location.hostname === 'localhost' ? ':8000/uploads/' : '/');
-    
+
     return (
       <div className={clsx(className, styles.root)} >
+        <Button className={styles.btn} variant="outlined" color="primary" size="medium" component={Link} to={`/`}>
+          Homepage
+        </Button>
         {(this.post) ? <Card >
           <CardContent>
             {((this.status === 'granted' && currentlyLoggedUser.email === this.post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${this.post._id}/edit`} >edit</Button>}
-            <Typography gutterBottom variant="h5" component="h2">
-              {this.post.photo && <CardMedia component="img" alt="---" image={`${this.imageUrl}${this.post.photo}`} />}
+            <Typography className={styles.typo} gutterBottom variant="h5" component="h2">
+              {this.post.photo && <CardMedia className={styles.photo} component="img" alt="---" image={`${this.imageUrl}${this.post.photo}`} />}
               <div className={styles.title}>{this.post.title}</div>
               <div>{this.post.text}</div>
               <div className={styles.dataAndStatus}>
@@ -48,9 +51,6 @@ class Component extends React.Component {
             </Typography>
           </CardContent>
         </Card> : null}
-        <Button variant="outlined" color="primary" size="medium" component={Link} to={`/`}>
-          Homepage
-        </Button>
       </div>
     );
   }

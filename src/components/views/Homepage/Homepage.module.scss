@@ -1,5 +1,23 @@
 @import '../../../styles/settings.scss';
 
 .card {
-    margin-top: 10px;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.avatar {
+  min-width: 15%;
+  min-height: 125px;
+  margin-left: 15px;
+}
+
+.typho {
+  max-width: 75%;
+  margin-right: 15px;
+}
+
+.wrapper {
+    margin-top: 20px;
 }

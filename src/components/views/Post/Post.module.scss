@@ -1,4 +1,19 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.photo {
+    max-width: 300px;
+    max-height: 400px;
+    margin: 0 auto;
+}
+
+.btn {
+    margin: 5px;
+}
+
+.typo {
+  text-align: center;
+  max-width: 80%;
+  margin: 0 auto;
+  overflow-wrap: break-word;
+
+}
