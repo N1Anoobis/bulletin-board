@@ -31,11 +31,12 @@ router.get('/post/:id', async (req, res) => {
 
 router.post('/posts/add', async (req, res) => {
   try {
-    const { title, text, author } = req.body;
-    const fileName = req.body.photo.split('/').slice(-1)[0];
-    
+    const { title, text, author } = req.fields;
+    const file = req.files.photo;
+
     if (validateUserInput(title, text, author)) {
-      const newPost = new Post({ ...req.body, photo: fileName});
+      const newPost = new Post(
+        { ...req.fields, photo: file ? file.path.split('/').slice(-1)[0] : null });
       await newPost.save();
       res.json(newPost);
     }
@@ -46,10 +47,11 @@ router.post('/posts/add', async (req, res) => {
 
 router.put('/post/:id/edit', async (req, res) => {
   try {
-    const { title, text, author } = req.body;
+    const { author, title, text } = req.fields;
+    const file = req.files.photo;
 
     if (validateUserInput(title, text, author)) {
-      const editedPost = await Post.findOneAndUpdate({ _id: req.params.id }, { ...req.body }, { returnNewDocument: true });
+      const editedPost = await Post.findOneAndUpdate({ _id: req.fields.id }, { ...req.fields, photo: file ? file.path.split('/').slice(-1)[0] : null }, { returnNewDocument: true });
       if (!editedPost) res.status(404).json({ post: 'Not found' });
       else res.json(editedPost);
     }

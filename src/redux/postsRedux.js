@@ -27,7 +27,7 @@ export const editSinglePost = (payload) => ({ payload, type: EDIT_POST });
 /* thunk creators */
 export const fetchPublished = () => {
   return (dispatch, getState) => {
-   
+
     dispatch(fetchStarted());
     Axios
       .get('http://localhost:8000/api/posts')
@@ -41,7 +41,7 @@ export const fetchPublished = () => {
 };
 
 export const fetchSingledPosts = (id) => {
-  return async (dispatch) => {
+  return async (dispatch,state) => {
     dispatch(fetchStarted());
     try {
       let res = await Axios.get(`http://localhost:8000/api/post/${id}`);
@@ -56,7 +56,7 @@ export const addNewAdvert = (newPost) => {
   return async (dispatch) => {
     dispatch(fetchStarted());
     try {
-      let res = await Axios.post(`http://localhost:8000/api/posts/add`, newPost);
+      let res = await Axios.post(`http://localhost:8000/api/posts/add`, newPost, { headers: { 'Content-Type': 'multipart/form-data' } });
       dispatch(addNewPost(res.data));
     } catch (e) {
       dispatch(fetchError(e.message));
@@ -68,7 +68,7 @@ export const editSingledAdvert = (edited) => {
   return async (dispatch) => {
     dispatch(fetchStarted());
     try {
-      let res = await Axios.put(`http://localhost:8000/api/post/${edited.id}/edit`, edited);
+      let res = await Axios.put(`http://localhost:8000/api/post/${edited.id}/edit`, edited, { headers: { 'Content-Type': 'multipart/form-data' } });
       dispatch(editSinglePost(res));
     } catch (e) {
       dispatch(fetchError(e.message));

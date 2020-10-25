@@ -11,11 +11,12 @@ import { globalStatus } from '../../../redux/statusRedux';
 import Button from '@material-ui/core/Button';
 import styles from './Post.module.scss';
 import { Link } from 'react-router-dom';
-// import CardMedia from '@material-ui/core/CardMedia';
+import CardMedia from '@material-ui/core/CardMedia';
 
 class Component extends React.Component {
 
   componentDidMount() {
+
     const { getSingledPosts } = this.props;
     getSingledPosts();
   }
@@ -26,15 +27,14 @@ class Component extends React.Component {
     const currentlyLoggedUser = this.props.users[1];
     const { getPost } = this.props;
     this.post = getPost;
-  
-    
+
     return (
       <div className={clsx(className, styles.root)} >
         {(this.post) ? <Card >
           <CardContent>
-            {((this.status === 'granted' && currentlyLoggedUser.email === this.post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${this.post.title}/edit`} >edit</Button>}
+            {((this.status === 'granted' && currentlyLoggedUser.email === this.post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${this.post._id}/edit`} >edit</Button>}
             <Typography gutterBottom variant="h5" component="h2">
-              {/* { this.post.photo && <CardMedia component="img" alt="Ad item" image={'http://localhost:8000/api/pos/'} />} */}
+              {this.post.photo && <CardMedia component="img" alt="---" image={`http://localhost:8000/uploads/${this.post.photo}`} />}
               <div className={styles.title}>{this.post.title}</div>
               <div>{this.post.text}</div>
               <div className={styles.dataAndStatus}>
@@ -48,7 +48,7 @@ class Component extends React.Component {
           </CardContent>
         </Card> : null}
         <Button variant="outlined" color="primary" size="medium" component={Link} to={`/`}>
-      Homepage
+          Homepage
         </Button>
       </div>
     );
@@ -68,7 +68,7 @@ Component.propTypes = {
   photo: PropTypes.string,
 };
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
   getPost: getPostById(state),
   status: globalStatus(state),
   users: getUsers(state),

@@ -39,8 +39,8 @@ class Component extends React.Component {
     const type = target.type;
     let file = target.files;
     if (file) {
-      // this.setState({ photo: URL.createObjectURL(target.files[0])});
-      this.setState({ photo: file[0].name });
+ 
+      this.setState({ photo: file[0] });
     }
     if (type === 'text' || type === 'textarea' || type === 'email') {
 
@@ -62,28 +62,30 @@ class Component extends React.Component {
     const validation = this.formValidation();
     if (validation.correct) {
       if (!this.props.mode) {
-        this.props.addPost({
-          author: this.state.email,
-          title: this.state.title,
-          text: this.state.textarea,
-          created: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
-          status: this.state.published,
-          updated: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
-          photo: this.state.photo,
-        });
-        console.log(this.state);
+        const formData = new FormData();
+        formData.append('author', this.state.email);
+        formData.append('title', this.state.title);
+        formData.append('text', this.state.textarea);
+        formData.append('status', this.state.published);
+        formData.append('created', new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '));
+        formData.append('updated', new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '));
+        formData.append('photo', this.state.photo);
+  
+        this.props.addPost(formData);
+    
       }
       if (this.props.mode === 'edit') {
-        this.props.editPost({
-          id: this.state.id,
-          user: 'logged user',
-          author: this.state.email,
-          title: this.state.title,
-          text: this.state.textarea,
-          updated: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '),
-          status: this.state.edited,
-          photo: this.state.photo,
-        });
+        const formData = new FormData();
+        formData.append('id', this.state.id);
+        formData.append('author', this.state.email);
+        formData.append('title', this.state.title);
+        formData.append('text', this.state.textarea);
+        formData.append('status', this.state.edited);
+        formData.append('created', new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '));
+        formData.append('updated', new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0].replace('T', ' '));
+        formData.append('photo', this.state.photo);
+    
+        this.props.editPost(formData);
       }
       this.setState({
         id: '',
@@ -113,8 +115,6 @@ class Component extends React.Component {
   }
 
   formValidation() {
-    // true - ok
-    // false - zle
     let title = false;
     let email = false;
     let textarea = false;
@@ -166,7 +166,7 @@ class Component extends React.Component {
       const url = `${this.props.match.params.id}/edit`.slice(0, `${this.props.match.params.id}/edit`.lastIndexOf('/'));
 
       for (const post of this.props.posts) {
-        if (post['title'] === url) {
+        if (post['_id'] === url) {
           this.setState({
             id: post._id,
             email: post.author,
@@ -174,6 +174,7 @@ class Component extends React.Component {
             title: post.title,
             photo: post.photo,
           });
+          console.log(post)
         }
       }
     }
@@ -245,7 +246,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // addPost: newPost => dispatch(addNewPost(newPost)),
   editPost: edited => dispatch(editSingledAdvert(edited)),
   addPost: newPost => dispatch(addNewAdvert(newPost)),
 });
