@@ -14,7 +14,8 @@
     "eject": "react-scripts eject",
     "server": "npx nodemon backend/server.js",
     "client": "yarn start",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix client yarn build --prefix client"
   },
   "proxy": "http://localhost:8000",
   "lint-staged": {
