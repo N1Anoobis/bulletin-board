@@ -27,14 +27,15 @@ class Component extends React.Component {
     const currentlyLoggedUser = this.props.users[1];
     const { getPost } = this.props;
     this.post = getPost;
-
+    this.imageUrl = '//' + window.location.hostname + (window.location.hostname === 'localhost' ? ':8000/uploads/' : '/');
+    
     return (
       <div className={clsx(className, styles.root)} >
         {(this.post) ? <Card >
           <CardContent>
             {((this.status === 'granted' && currentlyLoggedUser.email === this.post.author) || this.status === 'admin') && <Button variant="outlined" color="secondary" component={Link} to={`/post/${this.post._id}/edit`} >edit</Button>}
             <Typography gutterBottom variant="h5" component="h2">
-              {this.post.photo && <CardMedia component="img" alt="---" image={`http://localhost:8000/uploads/${this.post.photo}`} />}
+              {this.post.photo && <CardMedia component="img" alt="---" image={`${this.imageUrl}${this.post.photo}`} />}
               <div className={styles.title}>{this.post.title}</div>
               <div>{this.post.text}</div>
               <div className={styles.dataAndStatus}>
