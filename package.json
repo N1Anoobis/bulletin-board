@@ -15,7 +15,7 @@
     "server": "npx nodemon backend/server.js",
     "client": "yarn start",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-    "postinstall": "yarn run build"
+    "heroku-postbuild": "yarn run build"
   },
   "proxy": "http://localhost:8000",
   "lint-staged": {
