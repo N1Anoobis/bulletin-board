@@ -28,7 +28,7 @@ class Component extends React.Component {
       posts = filterPosts;
     }
     this.imageUrl = '//' + window.location.hostname + (window.location.hostname === 'localhost' ? ':8000/uploads/' : '/');
-console.log(posts)
+
     return (
       (status.globalStatus === 'granted' || (!mode)) && <div className={clsx(className, styles.root)}>
         {(posts) && posts.map((post) => (
