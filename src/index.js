@@ -8,7 +8,7 @@ ReactDOM.render(
   <Auth0Provider
     domain= {process.env.DOMAIN}
     clientId= {process.env.CLIENT_ID}
-    redirectUri= 'https://fast-anchorage-73380.herokuapp.com/'>
+    redirectUri= 'https://safe-sierra-38716.herokuapp.com/'>
     <App />
   </Auth0Provider>,
   document.getElementById('root'));
