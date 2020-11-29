@@ -8,7 +8,7 @@ ReactDOM.render(
   <Auth0Provider
     domain= {process.env.DOMAIN}
     clientId= {process.env.CLIENT_ID}
-    redirectUri= 'https://safe-sierra-38716.herokuapp.com/'>
+    redirectUri= 'https://thirsty-joliot-aa361b.netlify.app'>
     <App />
   </Auth0Provider>,
   document.getElementById('root'));
