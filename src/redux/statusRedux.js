@@ -20,7 +20,7 @@ export const reducer = (statePart = [], action = {}) => {
       return {
         ...statePart,
         globalStatus: action.payload,
-      }
+      };
     default:
       return statePart;
   }

@@ -1,4 +1,7 @@
 import Axios from 'axios';
+
+const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:8000/api';
+
 /* selectors */
 export const getAll = ({ posts }) => posts.data;
 
@@ -30,7 +33,7 @@ export const fetchPublished = () => {
 
     dispatch(fetchStarted());
     Axios
-      .get('http://localhost:8000/api/posts')
+      .get(`${API_URL}/posts`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })
@@ -44,7 +47,7 @@ export const fetchSingledPosts = (id) => {
   return async (dispatch,state) => {
     dispatch(fetchStarted());
     try {
-      let res = await Axios.get(`http://localhost:8000/api/post/${id}`);
+      let res = await Axios.get(`${API_URL}/post/${id}`);
       dispatch(fetchSinglePost(res.data));
     } catch (e) {
       dispatch(fetchError(e.message || true));
@@ -56,7 +59,7 @@ export const addNewAdvert = (newPost) => {
   return async (dispatch) => {
     dispatch(fetchStarted());
     try {
-      let res = await Axios.post(`http://localhost:8000/api/posts/add`, newPost, { headers: { 'Content-Type': 'multipart/form-data' } });
+      let res = await Axios.post(`${API_URL}/posts/add`, newPost, { headers: { 'Content-Type': 'multipart/form-data' } });
       dispatch(addNewPost(res.data));
     } catch (e) {
       dispatch(fetchError(e.message));
@@ -68,7 +71,7 @@ export const editSingledAdvert = (edited) => {
   return async (dispatch) => {
     dispatch(fetchStarted());
     try {
-      let res = await Axios.put(`http://localhost:8000/api/post/${edited.id}/edit`, edited, { headers: { 'Content-Type': 'multipart/form-data' } });
+      let res = await Axios.put(`${API_URL}/post/${edited.id}/edit`, edited, { headers: { 'Content-Type': 'multipart/form-data' } });
       dispatch(editSinglePost(res));
     } catch (e) {
       dispatch(fetchError(e.message));
